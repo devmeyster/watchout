@@ -3,3 +3,9 @@
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
+.enemy {
+  background-image: url("./asteroid.png");
+  background-size: 100% 100%;
+  width: 25px;
+  height: 25px;
+}
