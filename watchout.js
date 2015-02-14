@@ -13,7 +13,7 @@ var createEnemies = function(n){
     return {
       'id': i,
       'x': 10+Math.random()* 710,
-      'y': 10+Math.random()* 710
+      'y': 10+Math.random()* 500
     };
   });
 };
@@ -30,10 +30,24 @@ d3.select ('body')
  .attr ({ x : 0, y : 0, width : 40, height : 40,
             'xlink:href' : './asteroid.png'});
 
+ d3.select ('body')
+  .append ('svg')
+  .attr ({ id : 'playerSvg', width : 80, height : 80})
+  .append ('defs')
+  .attr ({ id : 'mdef'})
+  .append ('pattern')
+  .attr ({ id : 'playerImage', x : 0, y : 0, height: 40, width : 40})
+  .append ('image')
+  .attr ({ x : 0, y : 0, width : 40, height : 40,
+             'xlink:href' : './yoda.gif'});
+
+
+
+
 
 var board = d3.select("body")
             .append("svg")
-            .attr("height", "750px")
+            .attr("height", "500px")
             .attr("width", "750px");
 
 
@@ -47,7 +61,7 @@ circles.enter().append("circle")
    .style("stroke", "black")     // displays small black dot
    .style("stroke-width", 0.25);
 
-var player = board.append("circle").attr("class", "player").attr("r", 10).attr("cx", 375).attr("cy", 375).style("fill", "orange");
+var player = board.append("circle").attr("class", "player").attr("r", 20).attr("cx", 150).attr("cy", 150).style("fill", "url(#playerImage)");
 
 var dragListener = d3.behavior.drag()
   .on("drag", function(){
@@ -78,7 +92,7 @@ var detector = function(){
     var pR = player[0][0].r.animVal.value;
     var math = Math.sqrt(Math.pow(pX-this.cx.animVal.value,2) + Math.pow(pY-this.cy.animVal.value,2));
 
-    if(math <= 2*pR){
+    if(math <= 1.5*pR){
       if(highScore < currentScore){
         high.text(currentScore);
         highScore = currentScore;

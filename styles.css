@@ -3,9 +3,25 @@
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
+body {
+  background-image: url("./interstellar.jpg");
+  background-size: 100% 800px;
+  background-repeat: no-repeat;
+}
+
+.container{
+  height: 450px;
+}
+
 .enemy {
   background-image: url("./asteroid.png");
   background-size: 100% 100%;
   width: 25px;
   height: 25px;
+}
+
+.scoreboard{
+  font-family: arial;
+  font-size: 20px;
+  color: white;
 }
