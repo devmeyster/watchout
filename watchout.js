@@ -2,7 +2,11 @@
 var astroid = "./asteroid.png";
 var width = 200;
 var height = 200;
-
+var score = d3.select(".current").select('span');
+var high = d3.select(".high").select('span');
+var totalCollisions = 0;
+var currentScore = 0;
+var highScore = 0;
 
 var createEnemies = function(n){
   return _.range(0, n).map(function(i){
@@ -46,16 +50,16 @@ circles.enter().append("circle")
 var player = board.append("circle").attr("class", "player").attr("r", 10).attr("cx", 375).attr("cy", 375).style("fill", "orange");
 
 var dragListener = d3.behavior.drag()
-.on("drag", function(){
-  player.attr('cx', d3.event.x);
-  player.attr('cy' , d3.event.y);
-})
-.on("dragstart", function(){
-  player.style('opacity', .5);
-})
-.on("dragend", function(){
-  player.style('opacity', 1);
-});
+  .on("drag", function(){
+    player.attr('cx', d3.event.x);
+    player.attr('cy' , d3.event.y);
+  })
+  .on("dragstart", function(){
+    player.style('opacity', .5);
+  })
+  .on("dragend", function(){
+    player.style('opacity', 1);
+  });
 
 player.call(dragListener);
 
@@ -67,33 +71,23 @@ var move = function(){
 
 setInterval(move, 1000);
 
+var detector = function(){
+  d3.selectAll('.enemy').each(function(d){
+    var pX = player[0][0].cx.animVal.value;
+    var pY = player[0][0].cy.animVal.value;
+    var pR = player[0][0].r.animVal.value;
+    var math = Math.sqrt(Math.pow(pX-this.cx.animVal.value,2) + Math.pow(pY-this.cy.animVal.value,2));
 
+    if(math <= 2*pR){
+      if(highScore < currentScore){
+        high.text(currentScore);
+        highScore = currentScore;
+      }
+      currentScore = 0;
+    }
+    score.text(currentScore);
+    currentScore++;
+  });
+};
 
-
-
-
-
-
-
-
-
-
-// var move = function(num){
-//   var circles = board.selectAll('circle').data(createEnemies(num));
-//     circles.enter().append("circle")
-//        .attr("class", "logo")
-//        .attr("cx", function(d){return d.x})
-//        .attr("cy", function(d){return d.y})
-//        .attr("r", 20)
-//        .style("fill", "url(#image)")       // this code works OK
-//        .style("stroke", "black")     // displays small black dot
-//        .style("stroke-width", 0.25);
-
-//     circles.exit().remove();
-// };
-
-
-
-
-// setInterval(function(){move(Math.floor(Math.random()*100))}, 1000);
-
+d3.timer(detector);
