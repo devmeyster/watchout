@@ -27,61 +27,57 @@ d3.select ('body')
             'xlink:href' : './asteroid.png'});
 
 
-
 var board = d3.select("body")
             .append("svg")
-            .attr("height", "450px")
-            .attr("width", "450px");
+            .attr("height", "750px")
+            .attr("width", "750px");
 
 
-var playData = [{id: 1, 'x': 300, 'y': 300}, {id: 1, 'x': 200, 'y': 200}];
+var circles = board.selectAll('circle').data(createEnemies(30));
+circles.enter().append("circle")
+   .attr("class", "logo")
+   .attr("cx", function(d){return d.x})
+   .attr("cy", function(d){return d.y})
+   .attr("r", 10)
+   .style("fill", "url(#image)")       // this code works OK
+   .style("stroke", "black")     // displays small black dot
+   .style("stroke-width", 0.25);
+
+
+var move = function(){
+  var circlesToMove = board.selectAll('circle').data(createEnemies(30));
+  circles.transition().duration(1500).attr("cx", function(d){return d.x})
+         .attr("cy", function(d){return d.y});
+};
+
+setInterval(move, 1000);
 
 
 
-board.selectAll('circle').data(createEnemies(90)).enter().append("circle")
-  .attr("class", "logo")
-  .attr("cx", function(d){return d.x})
-  .attr("cy", function(d){return d.y})
-  .attr("r", 20)
-  .style("fill", "url(#image)")       // this code works OK
-  .style("stroke", "black")     // displays small black dot
-  .style("stroke-width", 0.25);
 
 
 
 
-// var update = function(data){
-//   board.selectAll('circle').data(data)
-//     .enter().append('circle')
-//     .attr("class", "logo")
-//     .attr('cx', function(d){return d.x})
-//     .attr('cy', function(d){return d.y})
-//     .attr('r', 20)
-//     .style('fill', "url(#image")
-//     .style('stroke', "black")
-//     .style("stroke-width", 0.25);
 
-//     // .attr('class', 'enemy');
-//     // .style('top', function(d){return d.y})
-//     // .style('left', function(d){return d.x})
-//     // .attr('class', 'enemy')
-//     // // .style('width', 25)
-//     // .style('height', 25);
+
+
+
+// var move = function(num){
+//   var circles = board.selectAll('circle').data(createEnemies(num));
+//     circles.enter().append("circle")
+//        .attr("class", "logo")
+//        .attr("cx", function(d){return d.x})
+//        .attr("cy", function(d){return d.y})
+//        .attr("r", 20)
+//        .style("fill", "url(#image)")       // this code works OK
+//        .style("stroke", "black")     // displays small black dot
+//        .style("stroke-width", 0.25);
+
+//     circles.exit().remove();
 // };
 
-// var enemies = createEnemies(10);
-// update(enemies);
 
 
 
-
-
-
-
-
-
-
-
-
-
+// setInterval(function(){move(Math.floor(Math.random()*100))}, 1000);
 
