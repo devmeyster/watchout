@@ -35,7 +35,7 @@ var board = d3.select("body")
 
 var circles = board.selectAll('circle').data(createEnemies(30));
 circles.enter().append("circle")
-   .attr("class", "logo")
+   .attr("class", "enemy")
    .attr("cx", function(d){return d.x})
    .attr("cy", function(d){return d.y})
    .attr("r", 10)
@@ -43,9 +43,13 @@ circles.enter().append("circle")
    .style("stroke", "black")     // displays small black dot
    .style("stroke-width", 0.25);
 
+board.append("circle").attr("class", "player").attr("r", 10).attr("cx", 375).attr("cy", 375).style("fill", "orange");
+
+board.selectAll('.player').drag();
+
 
 var move = function(){
-  var circlesToMove = board.selectAll('circle').data(createEnemies(30));
+  var circlesToMove = board.selectAll('.enemy').data(createEnemies(30));
   circles.transition().duration(1500).attr("cx", function(d){return d.x})
          .attr("cy", function(d){return d.y});
 };
