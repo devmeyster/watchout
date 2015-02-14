@@ -8,8 +8,8 @@ var createEnemies = function(n){
   return _.range(0, n).map(function(i){
     return {
       'id': i,
-      'x' : Math.random()* 1000,
-      'y' : Math.random()* 1000
+      'x': 10+Math.random()* 710,
+      'y': 10+Math.random()* 710
     };
   });
 };
@@ -43,10 +43,21 @@ circles.enter().append("circle")
    .style("stroke", "black")     // displays small black dot
    .style("stroke-width", 0.25);
 
-board.append("circle").attr("class", "player").attr("r", 10).attr("cx", 375).attr("cy", 375).style("fill", "orange");
+var player = board.append("circle").attr("class", "player").attr("r", 10).attr("cx", 375).attr("cy", 375).style("fill", "orange");
 
-board.selectAll('.player').drag();
+var dragListener = d3.behavior.drag()
+.on("drag", function(){
+  player.attr('cx', d3.event.x);
+  player.attr('cy' , d3.event.y);
+})
+.on("dragstart", function(){
+  player.style('opacity', .5);
+})
+.on("dragend", function(){
+  player.style('opacity', 1);
+});
 
+player.call(dragListener);
 
 var move = function(){
   var circlesToMove = board.selectAll('.enemy').data(createEnemies(30));
@@ -55,6 +66,7 @@ var move = function(){
 };
 
 setInterval(move, 1000);
+
 
 
 
