@@ -45,23 +45,38 @@ d3.select ('body')
 
 
 
-var board = d3.select("body")
-            .append("svg")
-            .attr("height", "500px")
-            .attr("width", "750px");
+var board = d3.select("body")			                //selecting the <body> 
+            .append("svg")				                //appending SVG element 
+            .attr("height", "500px")	                //setting board height
+            .attr("width", "750px");	                //setting board height
 
 
-var circles = board.selectAll('circle').data(createEnemies(30));
-circles.enter().append("circle")
-   .attr("class", "enemy")
-   .attr("cx", function(d){return d.x})
-   .attr("cy", function(d){return d.y})
-   .attr("r", 10)
-   .style("fill", "url(#image)")       // this code works OK
-   .style("stroke", "black")     // displays small black dot
-   .style("stroke-width", 0.25);
+var enemies = board.selectAll('circle')                 //select the (non-existant) SVG circle element
+                   .data(createEnemies(30));            //pass in the data from the createEnemies() function
+                   .enter().append("circle")			//append circle to all the "extra" data elements
+                   .attr("class", "enemy")				//assign class "enemy"
+                   .attr("r", 10)						//set the circle radius to 10
+                   .attr("cx", function(d){return d.x})	//assign the x coordinate
+                   .attr("cy", function(d){return d.y})	//assign the y coordinate
+                   .style("fill", "url(#image)")       	//set the enemy's background image
+                   .style("stroke", "black")     
+                   .style("stroke-width", 0.25);
 
-var player = board.append("circle").attr("class", "player").attr("r", 20).attr("cx", 150).attr("cy", 150).style("fill", "url(#playerImage)");
+var player = board.append("circle")                      //append circle element to the board 
+                  .attr("class", "player")	             //set class to "player"
+                  .attr("r", 20)			             //set radius to 20
+                  .attr("cx", 150)			             //assign the x coordinate
+                  .attr("cy", 150)			             //assign the y coordinate
+                  .style("fill", "url(#playerImage)");	 //set the player's background image
+
+var move = function(){
+  board.selectAll('.enemy')								 //select all circles with an "enemy" class
+       .data(createEnemies(30));						 //invoke createEnemies() to pass in new coordinates
+ 	   .transition().duration(1500)						 //implement D3 transitions with duration of 1.5 seconds
+ 	   .attr("cx", function(d){return d.x})				 //update the x coordinate
+       .attr("cy", function(d){return d.y});		     //update the y coordinate
+};
+
 
 var dragListener = d3.behavior.drag()
   .on("drag", function(){
@@ -77,11 +92,6 @@ var dragListener = d3.behavior.drag()
 
 player.call(dragListener);
 
-var move = function(){
-  var circlesToMove = board.selectAll('.enemy').data(createEnemies(30));
-  circles.transition().duration(1500).attr("cx", function(d){return d.x})
-         .attr("cy", function(d){return d.y});
-};
 
 setInterval(move, 1000);
 
