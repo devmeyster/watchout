@@ -4,24 +4,22 @@
 Feel free to use it if you like. */
 
 body {
-  background-image: url("./interstellar.jpg");
-  background-size: 100% 800px;
+  background-image: url("./interstellar1.jpeg");
+  background-size: 100% 100%;
   background-repeat: no-repeat;
+  overflow: hidden;
 }
 
 .container{
   height: 450px;
 }
 
-.enemy {
-  background-image: url("./asteroid.png");
-  background-size: 100% 100%;
-  width: 25px;
-  height: 25px;
-}
-
 .scoreboard{
   font-family: arial;
   font-size: 20px;
   color: white;
+}
+
+svg.board {
+  margin-top: -10%;
 }
